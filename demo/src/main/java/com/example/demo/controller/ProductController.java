@@ -100,7 +100,7 @@ public class ProductController {
     }
 
     // 刪除商品
-    @DeleteMapping("product/{productId}")
+    @DeleteMapping("/product/{productId}")
     public ResponseEntity deleteProduct(@PathVariable Integer productId) {
 
         // 刪除商品無須檢查商品ID
@@ -110,7 +110,7 @@ public class ProductController {
     }
 
     // 刪除多筆商品
-    @DeleteMapping("products")
+    @DeleteMapping("/products")
     public ResponseEntity deleteBatchProducts(@RequestBody List<Integer> productIds) {
         productService.deleteBatchProductsById(productIds);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -129,7 +129,7 @@ public class ProductController {
     }
 
     // 查詢所有商品v2 (含總數)
-    @GetMapping("v2/products")
+    @GetMapping("/v2/products")
     public ResponseEntity getAllProductsV2() {
         ProductPage productPage = productService.getAllProductsV2();
 

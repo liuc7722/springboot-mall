@@ -47,7 +47,7 @@ public class UserController{
     }
 
     // 登入後回傳用戶資訊
-    @PostMapping("/login")
+    @PostMapping("user/login")
     public ResponseEntity login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         User user = userService.login(userLoginRequest);
         
