@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.dao.UserDao;
+import com.example.demo.dto.UserLoginRequest;
+import com.example.demo.dto.UserRegisterRequest;
 import com.example.demo.model.User;
-import com.example.dto.UserLoginRequest;
-import com.example.dto.UserRegisterRequest;
 
 import jakarta.validation.Valid;
 

@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
-import com.example.dto.ProductRequest;
 
 import jakarta.validation.Valid;
 

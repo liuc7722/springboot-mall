@@ -6,8 +6,8 @@ import java.sql.Statement;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.dto.UserRegisterRequest;
 import com.example.demo.model.User;
-import com.example.dto.UserRegisterRequest;
 
 import jakarta.validation.Valid;
 
@@ -46,6 +46,7 @@ public class UserDao extends BaseDao {
                 conn.close();
 
         } catch (SQLException e) {
+            System.out.println("createUser問題");
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
@@ -58,14 +59,16 @@ public class UserDao extends BaseDao {
         User user = null;
         try {
             connect();
-            String sql = "SELECT * FROM user WHERE userid = ?;";
+            String sql = "SELECT * FROM user WHERE id = ?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery(); // 執行查詢
 
             if (rs.next()) {
                 user = new User();
-                user.setUserId(rs.getInt("userid"));
+                user.setUserId(rs.getInt("id"));
+                user.setGoogleId(rs.getInt("googleid"));
+                user.setFacebookId(rs.getInt("facebookid"));
                 user.setUserName(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
@@ -81,6 +84,7 @@ public class UserDao extends BaseDao {
                 conn.close();
 
         } catch (SQLException e) {
+            System.out.println("getUserById問題");
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
@@ -99,7 +103,7 @@ public class UserDao extends BaseDao {
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
                 user = new User();
-                user.setUserId(rs.getInt("userid"));
+                user.setUserId(rs.getInt("id"));
                 user.setUserName(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
@@ -114,6 +118,7 @@ public class UserDao extends BaseDao {
             if(conn != null)
                 conn.close();
         }catch(SQLException e){
+            System.out.println("getUserByUsername問題");
             System.out.println(e.getMessage());
         }catch(ClassNotFoundException e){
             System.out.println(e.getMessage());

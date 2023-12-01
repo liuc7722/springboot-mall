@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserLoginRequest;
+import com.example.demo.dto.UserRegisterRequest;
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.LoginResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import com.example.dto.UserLoginRequest;
-import com.example.dto.UserRegisterRequest;
 
 import jakarta.validation.Valid;
 

@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.BaseResponse;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductPage;
@@ -37,7 +38,6 @@ import com.example.demo.model.ProductResponse;
 import com.example.demo.model.ProductV2Response;
 import com.example.demo.model.SingleProductResponse;
 import com.example.demo.service.ProductService;
-import com.example.dto.ProductRequest;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;

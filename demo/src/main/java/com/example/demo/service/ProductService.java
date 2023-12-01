@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dao.ProductDao;
+import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductPage;
-import com.example.dto.ProductRequest;
 
 import jakarta.validation.Valid;
 
