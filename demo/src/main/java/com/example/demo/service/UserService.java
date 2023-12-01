@@ -28,8 +28,7 @@ public class UserService {
         User user = userDao.getUserByUsername(userRegisterRequest.getUserName());
         
         if(user != null){ // 假設此帳號被註冊過
-            log.warn("該 帳號 {} 已經被 註冊", userRegisterRequest.getUserName());
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST); // 強制停止這次的請求(回傳400)
+            return null;
         }
         // 創建帳號
         return userDao.createUser(userRegisterRequest);

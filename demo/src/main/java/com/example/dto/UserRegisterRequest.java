@@ -2,25 +2,26 @@ package com.example.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 //專門傳輸用戶的註冊
 @Data
 public class UserRegisterRequest {
 
-    @NotBlank
+    // @NotBlank
     String userName;
 
-    @NotBlank
+    // @NotBlank
     String password;
 
-    @NotBlank
-    @Email
+    // @NotBlank
+    // @Email
     String email;
 
-    @NotBlank
+    // @NotBlank
     String userRole;
 
-    @NotBlank
+    // @NotNull
     Integer emailVerified;
 }

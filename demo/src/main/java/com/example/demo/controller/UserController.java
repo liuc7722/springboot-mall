@@ -35,15 +35,17 @@ public class UserController{
 
     // 新增用戶
     @PostMapping("user/register")
-    public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
+    public ResponseEntity register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
 
         // 創建用戶並回傳ID
         Integer userId = userService.register(userRegisterRequest);
+        if(userId == null)
+            return new ResponseEntity<>(new LoginResponse(1, "註冊失敗", null), HttpStatus.OK);
         // 使用此ID查詢用戶並回傳完整資訊
         User user = userService.getUserById(userId);
-        user.setPassword(null); // 刻意把密碼回傳null
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(user); 
+        // user.setPassword(null); // 刻意把密碼回傳null
+        return new ResponseEntity<>(new LoginResponse(0, "註冊成功", user), HttpStatus.OK);
+        
     }
 
     // 登入後回傳用戶資訊
