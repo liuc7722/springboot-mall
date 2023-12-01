@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Hacker Login Form</title>
+  <link rel="stylesheet" href="./style.css">
+  <!-- 1. 引入Vue.js框架 -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!-- 引入axios套件，用來串接API -->
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!doctype html>
+
+<html lang="en"> 
+  
+ <head> 
+
+  <meta charset="UTF-8"> 
+
+  <title>CodePen - Animated Login Form using Html &amp; CSS Only</title> 
+
+  <link rel="stylesheet" href="./style.css"> 
+
+ </head> 
+
+ <body id="app"> <!-- partial:index.partial.html --> 
+
+  <section> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
+
+   <div class="signin"> 
+
+    <div class="content"> 
+
+     <h2 @click="testClick()">{{message}} Sign In</h2> 
+
+     <!-- <form action="/demo/login" method="post"> -->
+      <div class="form"> 
+
+        <div class="inputBox"> 
+          <!-- 綁定username變數給input -->
+          <input v-model="username" type="text" name="username" required> <i>帳號 {{ message }}</i>
+        </div> 
+
+        <div class="inputBox"> 
+          <!-- 將password變數榜定給input -->
+          <input v-model="password" type="password" required> <i>密碼</i> 
+        </div> 
+        <div v-if="isShowLoginError" class="login-failed">登入失敗</div>
+
+        <div class="links"> 
+          <a href="#">Forgot Password</a> <a href="#">Signup</a> 
+        </div> 
+
+        <div class="inputBox"> 
+          <input type="submit" value="登入" @click="login()"> 
+          <button @click="count++">
+              Count is: {{ count }}
+          </button>
+        </div> 
+
+      </div> 
+     <!-- </form> -->
+
+    </div> 
+
+   </div> 
+
+  </section> <!-- partial --> 
+ </body>
+
+</html>
+<!-- partial -->
+  
+</body>
+<script>
+
+
+
+  //3. 建立Vue物件並初始化
+  // import createApp 物件
+  // import { createApp } from 'vue' 不是這版本
+  const { createApp } = Vue
+
+  // {}相當於類別，只是沒有名字，叫做匿名類別
+  // return後面是大括號，也是一個匿名類別，有個資料叫count
+  // createApp會回傳一個物件，而我只會用一次，直接透過.運算子呼叫mount方法，參數是一個id(井字號是id，.是class)
+  createApp(
+    {
+      data() {
+        return {
+          count: 0,
+          message: "Hello vue",
+          username: '', //存放使用者輸入的帳號用
+          password: '',  //存放使用者輸入的密碼用
+          isShowLoginError:false
+        }
+      },
+      // Vue要使用的方法
+      methods:{
+        //測試click
+        testClick(){
+          this.message="Andy"
+        },
+        //登入用的方法
+        login() {
+          console.log('login');
+          console.log('username=' + this.username);
+          console.log('password=' + this.password);
+
+          //串接登入API
+          axios.get('/demo/login?username=' + this.username + '&password=' + this.password)
+          .then((response) => { //當我收到response時會做什麼?
+            console.log(response); //先測試會收到什麼
+            //處理API的回應
+            if(response.status == 200){
+              console.log('呼叫API成功');
+              if(response.data.code == 0){ //登入失敗
+                console.log('登入失敗: ' + response.data.message);
+                this.isShowLoginError = true;
+              }else {
+                console.log('登入成功');
+                location.href='https:www.google.com'; //跳轉頁面(html內建的)
+              }
+            }
+          })
+        }
+      }
+
+    }
+  ).mount('#app')
+</script>
+</html>
+<!-- 
+  想一想 
+  1. 有v-model就不用form處理表單?
+  2. 一個div包一個欄位
+  3. v-model的變數代表
+-->
