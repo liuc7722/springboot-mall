@@ -2,9 +2,9 @@ package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.model.BaseResponse;
+import com.example.Response.BaseResponse;
+import com.example.Response.CountdownResponse;
 import com.example.demo.model.Countdown;
-import com.example.demo.model.CountdownResponse;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;

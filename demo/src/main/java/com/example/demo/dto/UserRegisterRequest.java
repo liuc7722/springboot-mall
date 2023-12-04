@@ -5,23 +5,23 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-//專門傳輸用戶的註冊
+//專門用戶的註冊
 @Data
 public class UserRegisterRequest {
 
-    // @NotBlank
-    String userName;
+    @NotBlank
+    String username;
 
-    // @NotBlank
+    @NotBlank
     String password;
 
-    // @NotBlank
-    // @Email
+    @NotBlank
+    @Email
     String email;
 
-    // @NotBlank
+    @NotBlank
     String userRole;
 
-    // @NotNull
+    @NotNull
     Integer emailVerified;
 }

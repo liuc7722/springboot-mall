@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.Response.BaseResponse;
+
 import lombok.Data;
 
 @Data

@@ -18,6 +18,7 @@ import org.springframework.boot.actuate.autoconfigure.observation.ObservationPro
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,24 +28,31 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Response.BaseResponse;
+import com.example.Response.ProductResponse;
+import com.example.Response.ProductV2Response;
+import com.example.Response.SingleProductResponse;
+import com.example.demo.constant.ProductCategory;
+import com.example.demo.dto.ProductQueryParams;
 import com.example.demo.dto.ProductRequest;
-import com.example.demo.model.BaseResponse;
 import com.example.demo.model.Product;
 import com.example.demo.model.ProductPage;
-import com.example.demo.model.ProductResponse;
-import com.example.demo.model.ProductV2Response;
-import com.example.demo.model.SingleProductResponse;
 import com.example.demo.service.ProductService;
+import com.example.demo.util.Page;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.experimental.PackagePrivate;
 
 // @Hidden
+@Validated // 加上它@MAX,@MIN才會生效
 @CrossOrigin(origins = "*") // 允許不同網域的網頁呼叫API
 @RestController
 public class ProductController {
@@ -52,9 +60,45 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    // 查詢商品列表(包含商品總數等資訊)
+    @GetMapping("/products")
+    public ResponseEntity<Page<Product>> getProducts(
+        // 查詢條件 Filtering
+        @RequestParam(required = false) ProductCategory category,
+        @RequestParam(required = false) String search,
+        // 排序 Sorting
+        @RequestParam(defaultValue = "created_date") String orderBy, // 預設依照創建日期排序
+        @RequestParam(defaultValue = "desc") String sort,            // 預設降序
+        // 分頁Pagination
+        @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit, // 要取得幾筆商品數據
+        @RequestParam(defaultValue = "0") @Min(0) Integer offset            // 要跳過多少筆數據
+
+    ){
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
+
+        // 取得product list
+        List<Product> productList = productService.getProducts(productQueryParams);
+        // 取得 product 總數
+        Integer total = productService.countProduct(productQueryParams); // 傳參數是因為不同條件下的總筆數也會不同
+
+        // 分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total); 
+        page.setResults(productList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
     // 查詢商品
     @GetMapping("/product/{productId}")
-    public ResponseEntity getProduct(@PathVariable Integer productId) {
+    public ResponseEntity<?> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
 
         if (product != null) {
@@ -66,7 +110,7 @@ public class ProductController {
 
     // 新增商品
     @PostMapping("/product")
-    public ResponseEntity createProduct(@RequestBody @Valid ProductRequest productRequest) {
+    public ResponseEntity<?> createProduct(@RequestBody @Valid ProductRequest productRequest) {
 
         // 先新增商品取得商品ID，再藉由商品ID查詢商品資訊並回傳
         Integer productId = productService.creatrProduct(productRequest);
@@ -83,7 +127,7 @@ public class ProductController {
 
     // 修改商品
     @PutMapping("/product/{productId}")
-    public ResponseEntity updateProduct(@PathVariable Integer productId,
+    public ResponseEntity<?> updateProduct(@PathVariable Integer productId,
             @RequestBody @Valid ProductRequest productRequest) {
 
         // 先查詢是否有此商品
@@ -101,7 +145,7 @@ public class ProductController {
 
     // 刪除商品
     @DeleteMapping("/product/{productId}")
-    public ResponseEntity deleteProduct(@PathVariable Integer productId) {
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
 
         // 刪除商品無須檢查商品ID
         productService.deleteProductById(productId);
@@ -111,34 +155,25 @@ public class ProductController {
 
     // 刪除多筆商品
     @DeleteMapping("/products")
-    public ResponseEntity deleteBatchProducts(@RequestBody List<Integer> productIds) {
+    public ResponseEntity<?> deleteBatchProducts(@RequestBody List<Integer> productIds) {
         productService.deleteBatchProductsById(productIds);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     // 查詢所有商品(不含總數)
-    @GetMapping("/products")
-    public ResponseEntity getAllProducts() {
-        ArrayList<Product> products = productService.getAllProducts();
+    // @GetMapping("/products")
+    // public ResponseEntity getAllProducts() {
+    //     ArrayList<Product> products = productService.getAllProducts();
 
-        if (!products.isEmpty()) {
-            return new ResponseEntity<>(new ProductResponse(0, "查詢成功", products), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new ProductResponse(1, "無商品", new ArrayList<>()), HttpStatus.NOT_FOUND);
-        }
-    }
+    //     if (!products.isEmpty()) {
+    //         return new ResponseEntity<>(new ProductResponse(0, "查詢成功", products), HttpStatus.OK);
+    //     } else {
+    //         return new ResponseEntity<>(new ProductResponse(1, "無商品", new ArrayList<>()), HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
     // 查詢所有商品v2 (含總數)
-    @GetMapping("/v2/products")
-    public ResponseEntity getAllProductsV2() {
-        ProductPage productPage = productService.getAllProductsV2();
-
-        if(productPage != null && !productPage.getProducts().isEmpty()){
-            return new ResponseEntity<>(new ProductV2Response(0, "查詢成功", productPage), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(new ProductV2Response(1, "查詢失敗", null), HttpStatus.NOT_FOUND);
-        }
-    }
+ 
 
     // // 取得所有商品API
     // @RequestMapping(value = "/product", method = RequestMethod.GET, produces =

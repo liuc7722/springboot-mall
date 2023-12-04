@@ -1,9 +1,11 @@
 package com.example.demo.dto;
 
+import com.example.demo.constant.ProductCategory;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-// 專門處理前端新增商品時傳來的資訊
+// 專門處理前端新增商品
 @Data
 public class ProductRequest {
 
@@ -21,5 +23,5 @@ public class ProductRequest {
     @NotNull
     int stock;
     @NotNull
-    String category; // 商品種類可以使用enum呈現，這邊先不做
+    ProductCategory category; // 商品種類可以使用enum呈現，這邊先不做
 }

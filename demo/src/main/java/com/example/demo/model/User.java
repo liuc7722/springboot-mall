@@ -12,13 +12,13 @@ public class User {
     Integer userId;
     Integer googleId;
     Integer facebookId;
+    Integer lineId;
     String userName;
-    
-    @JsonIgnore // 待測試，當創建User時會回傳User給前端，此時前端並不會收到password的資訊
+    @JsonIgnore // 回傳User給前端時，會省略password
     String password;
     String email;
     String userRole;
     String emailVerified;
-    Date createDate;
+    Date createdDate;
     // Date lastModifiedDate;
 }

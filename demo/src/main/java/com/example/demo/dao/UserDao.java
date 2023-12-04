@@ -14,16 +14,16 @@ import jakarta.validation.Valid;
 @Component
 public class UserDao extends BaseDao {
 
-    // 在資料庫新增一筆用戶，回傳用戶的ID，若失敗回傳null
+    // 創建用戶並回傳用戶id，若失敗回傳null
     public Integer createUser(@Valid UserRegisterRequest userRegisterRequest) {
         Integer userId = null;
         try {
             connect();
-            String sql = "INSERT INTO user (username, password, email, userrole, emailverified)\n" + //
+            String sql = "INSERT INTO user (username, password, email, user_role, email_verified)\n" + //
                     "VALUES (?, ?, ?, ?, ?);\n" + //
                     "";
             pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); // 要取得自動增減值請都加上這句
-            pstmt.setString(1, userRegisterRequest.getUserName());
+            pstmt.setString(1, userRegisterRequest.getUsername());
             pstmt.setString(2, userRegisterRequest.getPassword());
             pstmt.setString(3, userRegisterRequest.getEmail());
             pstmt.setString(4, userRegisterRequest.getUserRole());
@@ -35,7 +35,7 @@ public class UserDao extends BaseDao {
             if (affectedRows > 0) {
                 ResultSet rs = pstmt.getGeneratedKeys(); // 取得主鍵值
                 if (rs.next()) {
-                    userId = rs.getInt(1); // 假設userID是第一列(那rs是什麼呢?)
+                    userId = rs.getInt(1); // 假設user_id是第一列(那rs是什麼呢?)
                 }
             }
             if(rs != null)
@@ -54,27 +54,28 @@ public class UserDao extends BaseDao {
         return userId;
     }
 
-    // 使用userId查詢資料庫的某筆用戶，查無則回傳null
+    // 使用id查詢用戶，查無則回傳null
     public User getUserById(Integer userId) {
         User user = null;
         try {
             connect();
-            String sql = "SELECT * FROM user WHERE id = ?;";
+            String sql = "SELECT * FROM user WHERE user_id = ?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userId);
             ResultSet rs = pstmt.executeQuery(); // 執行查詢
 
             if (rs.next()) {
                 user = new User();
-                user.setUserId(rs.getInt("id"));
-                user.setGoogleId(rs.getInt("googleid"));
-                user.setFacebookId(rs.getInt("facebookid"));
+                user.setUserId(rs.getInt("user_id"));
+                user.setGoogleId(rs.getInt("google_id"));
+                user.setFacebookId(rs.getInt("facebook_id"));
+                user.setLineId(rs.getInt("line_id"));
                 user.setUserName(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
-                user.setUserRole(rs.getString("userrole"));
-                user.setEmailVerified(rs.getString("emailverified"));
-                user.setCreateDate(rs.getDate("createdate"));
+                user.setUserRole(rs.getString("user_role"));
+                user.setEmailVerified(rs.getString("email_verified"));
+                user.setCreatedDate(rs.getDate("created_date"));
             }
             if(rs != null)
                 rs.close();
@@ -103,13 +104,13 @@ public class UserDao extends BaseDao {
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
                 user = new User();
-                user.setUserId(rs.getInt("id"));
+                user.setUserId(rs.getInt("user_id"));
                 user.setUserName(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
-                user.setUserRole(rs.getString("userrole"));
-                user.setEmailVerified(rs.getString("emailverified"));
-                user.setCreateDate(rs.getDate("createddate"));
+                user.setUserRole(rs.getString("user_role"));
+                user.setEmailVerified(rs.getString("email_verified"));
+                user.setCreatedDate(rs.getDate("created_date"));
             }
             if(rs != null)
                 rs.close();
@@ -124,6 +125,21 @@ public class UserDao extends BaseDao {
             System.out.println(e.getMessage());
         }
         return user;
+    }
+
+    // 刪除帳戶
+    public void deleteUserById(Integer userId) {
+        try {
+            connect();
+            String sql = "DELETE FROM user WHERE user_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }

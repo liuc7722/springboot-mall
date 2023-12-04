@@ -1,6 +1,8 @@
-package com.example.demo.model;
+package com.example.Response;
 
 import java.util.ArrayList;
+
+import com.example.demo.model.Product;
 
 import lombok.Data;
 

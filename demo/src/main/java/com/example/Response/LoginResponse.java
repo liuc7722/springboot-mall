@@ -1,4 +1,6 @@
-package com.example.demo.model;
+package com.example.Response;
+
+import com.example.demo.model.User;
 
 import lombok.Data;
 

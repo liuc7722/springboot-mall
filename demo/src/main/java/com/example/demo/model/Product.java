@@ -2,11 +2,13 @@ package com.example.demo.model;
 
 import java.util.Date;
 
+import com.example.demo.constant.ProductCategory;
+
 import lombok.Data;
 
 @Data
 public class Product {
-    int id; // 有空改成productId
+    int productId; // 有空改成productId
     String photoUrl;
     String title;
     String description;
@@ -16,7 +18,7 @@ public class Product {
     Date createdDate;
     Date lastModifiedDate;
     int stock;
-    String category;
+    ProductCategory category;
 }
 
     
