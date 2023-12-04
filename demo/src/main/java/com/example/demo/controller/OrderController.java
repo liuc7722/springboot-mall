@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +25,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class OrderController {
     
     @Autowired
@@ -51,8 +53,10 @@ public class OrderController {
         @RequestParam(defaultValue = "0")@Min(0) Integer offset,
         HttpSession session
     ){
+        System.out.println("Order Session ID: " + session.getId());
+
         // 判斷有無登入過
-        Integer sessionUserId = (Integer)session.getAttribute("orders");
+        Integer sessionUserId = (Integer)session.getAttribute("userId");
         if(sessionUserId == null || !sessionUserId.equals(userId)){ // 驗證是否登入且訪問的是自己的訂單
             System.out.println("NOT FOUND");
             System.out.println(sessionUserId);

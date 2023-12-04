@@ -45,6 +45,7 @@ import com.example.demo.service.ProductService;
 import com.example.demo.util.Page;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -71,9 +72,12 @@ public class ProductController {
         @RequestParam(defaultValue = "desc") String sort,            // 預設降序
         // 分頁Pagination
         @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit, // 要取得幾筆商品數據
-        @RequestParam(defaultValue = "0") @Min(0) Integer offset            // 要跳過多少筆數據
-
+        @RequestParam(defaultValue = "0") @Min(0) Integer offset,            // 要跳過多少筆數據
+        HttpSession session
     ){
+        Integer userID = (Integer)session.getAttribute("userId");
+        System.out.println("Order Session ID: " + session.getId());
+        System.out.println("userId: " + userID);
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);

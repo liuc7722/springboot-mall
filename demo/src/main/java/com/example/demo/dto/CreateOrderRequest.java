@@ -45,7 +45,7 @@ import lombok.Data;
 public class CreateOrderRequest {
     
     @NotNull
-    String shippingAddress;
+    String shippingAddress; // 運送地址
     @NotEmpty
     @Valid
     private List<BuyItem> buyItemList;

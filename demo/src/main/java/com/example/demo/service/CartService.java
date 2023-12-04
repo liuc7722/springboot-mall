@@ -29,13 +29,9 @@ public class CartService {
 
     // 添加商品到購物車
     public void addToCart(Integer userId, Integer productId) {
-        // // 檢查用戶是否存在
-        // User user = userDao.getUserById(userId);
-        // if (user == null) {
-        //     log.warn("該 userId {} 不存在", userId);
-        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        // }
-        // 檢查商品和庫存
+        // 假設用戶已經過身分驗證且存在
+        // 假設每個用戶在註冊時都已經擁有一個購物車
+        
         Product product = productDao.getProductById(productId);
         // 檢查 product 是否存在、庫存是否足夠
         if (product == null) {
@@ -64,4 +60,5 @@ public class CartService {
     // 所以先判斷此用戶有無購物車的紀錄，若無，則新增一筆購物車紀錄，再回傳購物車的id
     // 若有，直接取得購物車的id
     // 最後，確認有後就不關cart表的事了
+    
 }

@@ -1,12 +1,20 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.Cart;
 import com.example.demo.service.CartService;
+import com.example.demo.util.Page;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @RestController
 public class CartController {
@@ -19,10 +27,19 @@ public class CartController {
     public ResponseEntity<?> addToCart(@PathVariable Integer userId, Integer productId){
         cartService.addToCart(userId, productId);
         
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // 顯示購物車
+    // 查看購物車列表
+    // @GetMapping("/users/{userId}/cart")
+    // public ResponseEntity<Page<Cart>> getCart(
+    //     @PathVariable Integer userId,
+    //     @RequestParam(defaultValue = "5")@Max(1000) @Min(0) Integer limit,
+    //     @RequestParam(defaultValue = "0")@Min(0) Integer offset
+    // ){
+
+    //     return null;
+    // }
 
     // 修改購物車
 

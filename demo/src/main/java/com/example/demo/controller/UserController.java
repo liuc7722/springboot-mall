@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@CrossOrigin(origins = "*") // 允許不同網域的網頁呼叫API
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true") // 允許不同網域的網頁呼叫API
 public class UserController{
 
 
     @Autowired
-    private UserService userService;
+    private UserService userService;    
 
     // 新增用戶
     @PostMapping("user/register")
@@ -52,11 +52,11 @@ public class UserController{
     }
 
     // 登入後回傳用戶資訊
-    @PostMapping("user/login")
+    @PostMapping("/user/login")
     public ResponseEntity login(@RequestBody @Valid UserLoginRequest userLoginRequest,
-                                @RequestParam HttpSession session){
+                                HttpSession session){
         User user = userService.login(userLoginRequest);
-        
+        System.out.println("Login Session ID: " + session.getId());
         
         if(user == null){
             session.removeAttribute("userId");
