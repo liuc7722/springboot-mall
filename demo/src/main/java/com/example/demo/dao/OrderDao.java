@@ -229,9 +229,9 @@ public class OrderDao extends BaseDao {
     }
 
     // 拼接查詢條件
-    private void addFiltering(StringBuilder sqBuilder, OrderQueryParams queryParams) {
+    private void addFiltering(StringBuilder sqlBuilder, OrderQueryParams queryParams) {
         if (queryParams.getUserId() != null) {
-            sqBuilder.append(" AND user_id = ?");
+            sqlBuilder.append(" AND user_id = ?");
         }
     }
 

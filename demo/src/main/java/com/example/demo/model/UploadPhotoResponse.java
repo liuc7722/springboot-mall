@@ -1,6 +1,6 @@
 package com.example.demo.model;
 
-import com.example.Response.BaseResponse;
+import com.example.demo.Response.BaseResponse;
 
 import lombok.Data;
 

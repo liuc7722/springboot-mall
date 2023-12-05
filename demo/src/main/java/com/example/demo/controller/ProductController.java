@@ -32,10 +32,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Response.BaseResponse;
-import com.example.Response.ProductResponse;
-import com.example.Response.ProductV2Response;
-import com.example.Response.SingleProductResponse;
+import com.example.demo.Response.BaseResponse;
+import com.example.demo.Response.PageResponse;
+import com.example.demo.Response.ProductResponse;
+import com.example.demo.Response.ProductV2Response;
+import com.example.demo.Response.SingleProductResponse;
 import com.example.demo.constant.ProductCategory;
 import com.example.demo.dto.ProductQueryParams;
 import com.example.demo.dto.ProductRequest;
@@ -45,6 +46,8 @@ import com.example.demo.service.ProductService;
 import com.example.demo.util.Page;
 
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
@@ -63,9 +66,11 @@ public class ProductController {
 
     // 查詢商品列表(包含商品總數等資訊)
     @GetMapping("/products")
-    public ResponseEntity<Page<Product>> getProducts(
+    @Tag(name = "商品API")
+    @Operation(summary = "查詢商品列表", description = "可附上查詢條件")
+    public ResponseEntity<PageResponse<Product>> getProducts(
         // 查詢條件 Filtering
-        @RequestParam(required = false) ProductCategory category, // 種類
+        @RequestParam( required = false) ProductCategory category, // 種類
         @RequestParam(required = false) String search,            // 搜尋
         // 排序 Sorting
         @RequestParam(defaultValue = "created_date") String orderBy, // 預設依照創建日期排序
@@ -95,13 +100,17 @@ public class ProductController {
         Page<Product> page = new Page<>();
         page.setLimit(limit);
         page.setOffset(offset);
-        page.setTotal(total); 
-        page.setResults(productList);
-        return ResponseEntity.status(HttpStatus.OK).body(page);
+        page.setTotal(total);
+        page.setResults(productList);   
+        PageResponse<Product> pageResponse = new PageResponse<>(0, "查询成功", page);   
+
+        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }
 
     // 查詢商品
     @GetMapping("/product/{productId}")
+    @Tag(name = "商品API")
+    @Operation(summary = "查詢商品", description = "輸入商品ID")
     public ResponseEntity<?> getProduct(@PathVariable Integer productId) {
         Product product = productService.getProductById(productId);
 
@@ -114,6 +123,8 @@ public class ProductController {
 
     // 新增商品
     @PostMapping("/product")
+    @Tag(name = "商品API")
+    @Operation(summary = "新增商品", description = "輸入商品資訊")
     public ResponseEntity<?> createProduct(@RequestBody @Valid ProductRequest productRequest) {
 
         // 先新增商品取得商品ID，再藉由商品ID查詢商品資訊並回傳
@@ -131,6 +142,8 @@ public class ProductController {
 
     // 修改商品
     @PutMapping("/product/{productId}")
+    @Tag(name = "商品API")
+    @Operation(summary = "修改商品", description = "輸入商品ID")
     public ResponseEntity<?> updateProduct(@PathVariable Integer productId,
             @RequestBody @Valid ProductRequest productRequest) {
 
@@ -149,6 +162,8 @@ public class ProductController {
 
     // 刪除商品
     @DeleteMapping("/product/{productId}")
+    @Tag(name = "商品API")
+    @Operation(summary = "刪除商品", description = "輸入商品ID")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
 
         // 刪除商品無須檢查商品ID
@@ -159,6 +174,8 @@ public class ProductController {
 
     // 刪除多筆商品
     @DeleteMapping("/products")
+    @Tag(name = "商品API")
+    @Operation(summary = "刪除多筆商品", description = "輸入要刪除的商品ID")
     public ResponseEntity<?> deleteBatchProducts(@RequestBody List<Integer> productIds) {
         productService.deleteBatchProductsById(productIds);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

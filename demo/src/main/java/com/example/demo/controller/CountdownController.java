@@ -2,8 +2,8 @@ package com.example.demo.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Response.BaseResponse;
-import com.example.Response.CountdownResponse;
+import com.example.demo.Response.BaseResponse;
+import com.example.demo.Response.CountdownResponse;
 import com.example.demo.model.Countdown;
 
 import java.sql.SQLException;

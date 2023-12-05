@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.demo.dao.CartDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dto.UserLoginRequest;
 import com.example.demo.dto.UserRegisterRequest;
@@ -23,7 +24,10 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    // 註冊
+    @Autowired
+    CartDao cartDao;
+
+    // 註冊 + 新增購物車
     public Integer register(@Valid UserRegisterRequest userRegisterRequest) {
         // 檢查是否已有此帳號
         User user = userDao.getUserByUsername(userRegisterRequest.getUsername());
@@ -36,7 +40,6 @@ public class UserService {
         String hashedPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
         userRegisterRequest.setPassword(hashedPassword);
 
-        // 創建帳號
         return userDao.createUser(userRegisterRequest);
     }
 

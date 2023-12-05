@@ -1,4 +1,4 @@
-package com.example.Response;
+package com.example.demo.Response;
 
 import com.example.demo.model.ProductPage;
 

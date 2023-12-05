@@ -124,7 +124,7 @@ public class ProductDao extends BaseDao {
         Product product = null;
         try {
             connect();
-            String sql = "SELECT * from product WHERE product_id = ?";
+            String sql = "SELECT * FROM product WHERE product_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, productId);
             rs = pstmt.executeQuery();
