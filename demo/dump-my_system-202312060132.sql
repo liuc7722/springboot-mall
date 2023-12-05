@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `cart`
+--
+
+DROP TABLE IF EXISTS `cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cart` (
+  `cart_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `created_date` timestamp NOT NULL,
+  PRIMARY KEY (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cart`
+--
+
+LOCK TABLES `cart` WRITE;
+/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
+INSERT INTO `cart` VALUES (7,13,115,5,'0000-00-00 00:00:00'),(12,14,116,8,'0000-00-00 00:00:00');
+/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `count_down`
 --
 
@@ -54,7 +81,7 @@ CREATE TABLE `order` (
   `shipping_address` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +90,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES (7,9,3200,'2023-12-03 08:51:48','Taipei','processing');
+INSERT INTO `order` VALUES (12,10,2200,'2023-12-03 14:28:26','HsinChu','PROCESSING'),(13,9,2200,'2023-12-04 03:35:52','HsinChu','PROCESSING');
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +108,7 @@ CREATE TABLE `order_item` (
   `quantity` int NOT NULL,
   `price` int NOT NULL,
   PRIMARY KEY (`order_item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +117,7 @@ CREATE TABLE `order_item` (
 
 LOCK TABLES `order_item` WRITE;
 /*!40000 ALTER TABLE `order_item` DISABLE KEYS */;
-INSERT INTO `order_item` VALUES (13,7,113,2,1200),(14,7,116,5,2000);
+INSERT INTO `order_item` VALUES (23,12,115,5,1000),(24,12,116,3,1200),(25,13,115,5,1000),(26,13,116,3,1200);
 /*!40000 ALTER TABLE `order_item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,7 +141,7 @@ CREATE TABLE `product` (
   `stock` int NOT NULL,
   `category` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +150,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (113,'photoUrl','衣服','好穿',600,'storeUrl','storeName','2023-12-03 06:58:01','2023-12-03 08:51:48',8,'CLOTHES'),(115,'photoUrl','書本','好看',200,'storeUrl','storeName','2023-12-03 07:06:50','2023-12-03 07:06:50',30,'BOOK'),(116,'photoUrl','書本2','好看',400,'storeUrl','storeName','2023-12-03 07:07:01','2023-12-03 08:51:48',10,'BOOK'),(117,'photoUrl','書本3','好看',550,'storeUrl','storeName','2023-12-03 07:07:12','2023-12-03 07:07:12',3,'BOOK');
+INSERT INTO `product` VALUES (113,'photoUrl','衣服','好穿',600,'storeUrl','storeName','2023-12-03 06:58:01','2023-12-03 08:51:48',40,'CLOTHES'),(115,'photoUrl','書本','好看',200,'storeUrl','storeName','2023-12-03 07:06:50','2023-12-04 03:35:52',45,'BOOK'),(116,'photoUrl','書本2','好看',400,'storeUrl','storeName','2023-12-03 07:07:01','2023-12-04 03:35:52',16,'BOOK'),(117,'photoUrl','書本3','好看',550,'storeUrl','storeName','2023-12-03 07:07:12','2023-12-03 07:07:12',18,'BOOK'),(118,'photoUrl','書本4','好看',300,'storeUrl','storeName','2023-12-03 07:07:12','2023-12-03 07:07:12',20,'BOOK');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +174,7 @@ CREATE TABLE `user` (
   `created_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,7 +183,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (9,NULL,NULL,NULL,'Tedy','202cb962ac59075b964b07152d234b70','abc@gmail.com','MON',0,'2023-12-03 06:42:02'),(10,NULL,NULL,NULL,'Bedy','202cb962ac59075b964b07152d234b70','abc@gmail.com','MON',0,'2023-12-03 06:42:33'),(12,NULL,NULL,NULL,'Candy','202cb962ac59075b964b07152d234b70','abc@gmail.com','MON',0,'2023-12-03 06:43:57');
+INSERT INTO `user` VALUES (13,NULL,NULL,NULL,'Candy','202cb962ac59075b964b07152d234b70','abc@gmail.com','MON',0,'2023-12-04 13:06:45'),(14,NULL,NULL,NULL,'Tony','202cb962ac59075b964b07152d234b70','abc@gmail.com','MON',0,'2023-12-04 13:06:55'),(15,NULL,NULL,NULL,'Judy','202cb962ac59075b964b07152d234b70','abc@gmail.com','MON',0,'2023-12-04 13:07:00');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,4 +200,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-03 22:13:07
+-- Dump completed on 2023-12-06  1:32:07
