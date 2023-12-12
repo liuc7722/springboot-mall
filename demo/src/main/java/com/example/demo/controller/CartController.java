@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.text.html.HTML;
@@ -86,6 +87,15 @@ public class CartController {
         cartService.deleteFromCart(userId, productId);
         return null;
     }
+
+    // 購物車商品數量input與資料庫連動 
+    @PutMapping("{cartId}/{productId}/{quantity}")
+    @Tag(name = "購物車API")
+    @Operation(summary = "購物車商品數量input與資料庫連動 ")
+    public ResponseEntity quantitychange(@PathVariable Integer cartId, @PathVariable Integer productId, @PathVariable Integer quantity){
+        cartService.quantitychange(cartId,productId);
+        return null;
+    }   
 }
 /*
  * 當用戶選擇一個商品並將其添加到購物車時，系統會創建一個新的 CartItem 紀錄，並將選擇的商品的 ProductID 設定在這個記錄中。

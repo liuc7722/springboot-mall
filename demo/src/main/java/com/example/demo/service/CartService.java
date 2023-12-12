@@ -83,4 +83,10 @@ public class CartService {
         cartDao.deleteFromCart(userId, productId);
     }
 
+        // 購物車商品數量input與資料庫連動
+    public void quantitychange(Integer cartId, Integer productId) {
+
+        cartDao.quantitychange(cartId, productId);
+    }
+
 }
