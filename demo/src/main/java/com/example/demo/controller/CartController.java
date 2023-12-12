@@ -93,7 +93,7 @@ public class CartController {
     @Tag(name = "購物車API")
     @Operation(summary = "購物車商品數量input與資料庫連動 ")
     public ResponseEntity quantitychange(@PathVariable Integer cartId, @PathVariable Integer productId, @PathVariable Integer quantity){
-        cartService.quantitychange(cartId,productId);
+        cartService.quantitychange(cartId,productId, quantity);
         return null;
     }   
 }

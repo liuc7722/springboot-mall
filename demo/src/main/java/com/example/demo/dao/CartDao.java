@@ -208,7 +208,7 @@ public class CartDao extends BaseDao {
 
 
         // 購物車商品數量input與資料庫連動
-    public void quantitychange(Integer cartId, Integer productId) {
+    public void quantitychange(Integer cartId, Integer productId, Integer quantity) {
 
         try {
             connect();
@@ -223,7 +223,7 @@ public class CartDao extends BaseDao {
 
             pstmt.close();
             conn.close();
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {

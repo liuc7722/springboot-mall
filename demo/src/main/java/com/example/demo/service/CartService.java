@@ -84,9 +84,9 @@ public class CartService {
     }
 
         // 購物車商品數量input與資料庫連動
-    public void quantitychange(Integer cartId, Integer productId) {
+    public void quantitychange(Integer cartId, Integer productId, Integer quantity) {
 
-        cartDao.quantitychange(cartId, productId);
+        cartDao.quantitychange(cartId, productId, quantity);
     }
 
 }
