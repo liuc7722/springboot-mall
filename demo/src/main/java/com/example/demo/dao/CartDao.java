@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.dto.CartQueryParams;
-import com.example.demo.model.Cart;
 import com.example.demo.util.CartItemDetail;
 
 @Component
@@ -99,7 +98,7 @@ public class CartDao extends BaseDao {
                     System.out.println("未找到对应的购物车项或更新失败");
                 }
             } else {
-                String sql = "INSERT INTO cart(user_id, product_id, quantity) VALUES (?, ?, 1)";
+                String sql = "INSERT INTO cart(user_id, product_id, quantity, created_date) VALUES (?, ?, 1, NOW())";
                 pstmt = conn.prepareStatement(sql);
                 pstmt.setInt(1, userId);
                 pstmt.setInt(2, productId);
@@ -208,16 +207,16 @@ public class CartDao extends BaseDao {
 
 
         // 購物車商品數量input與資料庫連動
-    public void quantitychange(Integer cartId, Integer productId) {
+    public void quantitychange(Integer userId, Integer productId, Integer quantity) {
 
         try {
             connect();
 
-            String sql = "UPDATE cart SET quantity = ? WHERE cart_id = ? AND product_id = ? ";
+            String sql = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ? ";
             pstmt = conn.prepareStatement(sql);
 
             pstmt.setInt(1,quantity);
-            pstmt.setInt(2,cartId);
+            pstmt.setInt(2, userId);
             pstmt.setInt(3,productId);
             pstmt.executeUpdate();    
 

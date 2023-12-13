@@ -22,37 +22,50 @@ import com.example.demo.dto.CartQueryParams;
 import com.example.demo.model.Cart;
 import com.example.demo.service.CartService;
 import com.example.demo.util.CartItemDetail;
+import com.example.demo.util.JwtUtil;
 import com.example.demo.util.Page;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
 @Validated // 加上它@MAX,@MIN才會生效
-@CrossOrigin(origins = "*") // 允許不同網域的網頁呼叫API
+// @CrossOrigin(origins = "*") // 允許不同網域的網頁呼叫API
 @RestController
 public class CartController {
 
     @Autowired
     CartService cartService;
 
+    @Autowired
+    JwtUtil jwtUtil;
+
     // 查詢購物車列表
-    @GetMapping("/users/{userId}/carts")
+    @GetMapping("/users/carts")
     @Tag(name = "購物車API")
     @Operation(summary = "查詢購物車列表", description = "可加上查詢條件")
     public ResponseEntity<Page<CartItemDetail>> getCartItems(
-        @PathVariable Integer userId,
-        @RequestParam(defaultValue = "10")@Max(1000) @Min(0) Integer limit,
-        @RequestParam(defaultValue = "0")@Min(0) Integer offset
-    ){
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        // 驗證已經給攔截器做了
+        // if(token == null || !jwtUtil.validationToken(token)){
+        // return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        // }
+        Integer userId = jwtUtil.getUserIdFromToken(token); // 從JWT提取用戶ID
         CartQueryParams queryParams = new CartQueryParams();
         queryParams.setUserId(userId);
         queryParams.setLimit(limit);
         queryParams.setOffset(offset);
 
         Page<CartItemDetail> page = new Page<>();
-        List<CartItemDetail> cartItems =  cartService.getCartItems(queryParams);
+        List<CartItemDetail> cartItems = cartService.getCartItems(queryParams);
         Integer total = cartService.countCartItems(queryParams);
         page.setLimit(limit);
         page.setOffset(offset);
@@ -62,40 +75,65 @@ public class CartController {
     }
 
     // 添加一件商品到購物車
-    @PutMapping("/users/{userId}/{productId}/carts/increment")
+    @PutMapping("/users/carts/{productId}/increment")
     @Tag(name = "購物車API")
     @Operation(summary = "添加一件商品到購物車")
-    public ResponseEntity<?> incrementToCart(@PathVariable Integer userId, @PathVariable Integer productId){
+    public ResponseEntity<?> incrementToCart(HttpServletRequest request, @PathVariable Integer productId) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Integer userId = jwtUtil.getUserIdFromToken(token); // 從JWT中取得userid
         cartService.incrementToCart(userId, productId);
-        
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     // 從購物車減少一件商品
-    @PutMapping("/users/{userId}/{productId}/carts/decrement")
+    @PutMapping("/users/carts/{productId}/decrement")
     @Tag(name = "購物車API")
     @Operation(summary = "從購物車減少一件商品")
-    public ResponseEntity<?> decrementToCart(@PathVariable Integer userId, @PathVariable Integer productId){
+    public ResponseEntity<?> decrementToCart(HttpServletRequest request, @PathVariable Integer productId) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Integer userId = jwtUtil.getUserIdFromToken(token);
         cartService.decrementToCart(userId, productId);
-        return null;
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 從購物車刪除一種商品
-    @DeleteMapping("/users/{userId}/{productId}/carts")
+    @DeleteMapping("/users/carts/{productId}")
     @Tag(name = "購物車API")
     @Operation(summary = "從購物車刪除一種商品")
-    public ResponseEntity<?> deleteFromCart(@PathVariable Integer userId, @PathVariable Integer productId){
+    public ResponseEntity<?> deleteFromCart(HttpServletRequest request, @PathVariable Integer productId) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Integer userId = jwtUtil.getUserIdFromToken(token);
         cartService.deleteFromCart(userId, productId);
-        return null;
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    // 購物車商品數量input與資料庫連動 
-    @PutMapping("{cartId}/{productId}/{quantity}")
+    // 購物車商品數量input與資料庫連動
+    @PutMapping("/users/carts/{productId}/{quantity}")
     @Tag(name = "購物車API")
     @Operation(summary = "購物車商品數量input與資料庫連動 ")
-    public ResponseEntity quantitychange(@PathVariable Integer cartId, @PathVariable Integer productId, @PathVariable Integer quantity){
-        cartService.quantitychange(cartId,productId);
-        return null;
-    }   
+    public ResponseEntity quantitychange(HttpServletRequest request, @PathVariable Integer productId,
+            @PathVariable Integer quantity) {
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Integer userId = jwtUtil.getUserIdFromToken(token);
+        cartService.quantitychange(userId, productId, quantity);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
 /*
  * 當用戶選擇一個商品並將其添加到購物車時，系統會創建一個新的 CartItem 紀錄，並將選擇的商品的 ProductID 設定在這個記錄中。

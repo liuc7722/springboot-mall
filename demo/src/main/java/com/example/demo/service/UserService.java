@@ -43,6 +43,11 @@ public class UserService {
         return userDao.createUser(userRegisterRequest);
     }
 
+    // 將用戶的email驗證改為true
+    public void setEmailVerified(Integer userId){
+        userDao.setEmailVerified(userId);
+    }
+
     // 查詢
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);

@@ -3,7 +3,7 @@ package com.example.demo.constant;
 public class MyTest {
     public static void main(String[] args) {
         // 將enum和String作轉換
-        ProductCategory productCategory = ProductCategory.FOOD;
+        ProductCategory productCategory = ProductCategory.BOOK;
         String s = productCategory.name();
         System.out.println(s); //FOOD
 

@@ -142,4 +142,19 @@ public class UserDao extends BaseDao {
         }
     }
 
+    // 將使用者的email驗證改為true
+    public void setEmailVerified(Integer userId) {
+        try {
+            connect();
+            String sql = "UPDATE user SET email_verified = 1 WHERE user_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

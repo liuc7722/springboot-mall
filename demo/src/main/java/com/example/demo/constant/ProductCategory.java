@@ -1,8 +1,14 @@
 package com.example.demo.constant;
 
 public enum ProductCategory {
-    FOOD,
-    CAR,
+    LIVIING,
+    BOUTIQUE,
+    MAN_CLOTHES,
+    WOMAN_CLOTHES,
+    TRAVEL,
+    TRANSPORTATION,
     BOOK,
-    CLOTHES,
+    MOBILE,
+    COMPUTER,
+    HOUSEHOLD
 }

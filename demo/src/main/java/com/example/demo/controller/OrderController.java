@@ -17,57 +17,67 @@ import com.example.demo.dto.CreateOrderRequest;
 import com.example.demo.dto.OrderQueryParams;
 import com.example.demo.model.Order;
 import com.example.demo.service.OrderService;
+import com.example.demo.util.JwtUtil;
 import com.example.demo.util.Page;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class OrderController {
-    
+
     @Autowired
     OrderService orderService;
 
+    @Autowired
+    JwtUtil jwtUtil;
+
     // 創建訂單
-    @PostMapping("/users/{userId}/orders") // 為何這樣設計!?
+    @PostMapping("/users/orders") // 為何這樣設計!?
     @Tag(name = "訂單API")
     @Operation(summary = "創建訂單", description = "網址請輸入users/使用者ID/orders，如users/9/orders，表示使用者ID為9的使用者新增一筆訂單，訂單資訊放在RequestBody內")
-    public ResponseEntity<?> createOrder(@PathVariable Integer userId, // 原來路徑中有一個{},@PathVariable就會有一個參數!
-                                      @RequestBody @Valid CreateOrderRequest createOrderRequest ){ 
-        
+    public ResponseEntity<?> createOrder(HttpServletRequest request,
+            @RequestBody @Valid CreateOrderRequest createOrderRequest) {
+
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        Integer userId = jwtUtil.getUserIdFromToken(token);
         Integer orderId = orderService.createOrder(userId, createOrderRequest);
 
         Order order = orderService.getOrderById(orderId);
-        
 
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
-    
 
     // 查詢訂單列表(含數量+完整的訂單資訊)
-    @GetMapping("/users/{userId}/orders")
+    @GetMapping("/users/orders")
     @Tag(name = "訂單API")
     @Operation(summary = "查詢訂單列表", description = "網址請輸入users/使用者ID/orders，如users/9/orders")
     public ResponseEntity<Page<Order>> getOrders(
-        @PathVariable Integer userId,
-        @RequestParam(defaultValue = "10")@Max(1000) @Min(0) Integer limit,
-        @RequestParam(defaultValue = "0")@Min(0) Integer offset,
-        HttpSession session
-    ){
-        System.out.println("Order Session ID: " + session.getId());
-
-        // 判斷有無登入過
-        Integer sessionUserId = (Integer)session.getAttribute("userId");
-        if(sessionUserId == null || !sessionUserId.equals(userId)){ // 驗證是否登入且訪問的是自己的訂單
-            System.out.println("NOT FOUND");
-            System.out.println(sessionUserId);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            HttpServletRequest request,
+            @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset
+            ) {
+                
+        String token = request.getHeader("Authorization");
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
         }
+        Integer userId = jwtUtil.getUserIdFromToken(token);
+
+        // // 判斷有無登入過
+        // if (sessionUserId == null || !sessionUserId.equals(userId)) { // 驗證是否登入且訪問的是自己的訂單
+        //     System.out.println("NOT FOUND");
+        //     System.out.println(sessionUserId);
+        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        // }
 
         OrderQueryParams queryParams = new OrderQueryParams();
         queryParams.setUserId(userId);

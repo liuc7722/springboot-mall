@@ -52,8 +52,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Data;
-import lombok.experimental.PackagePrivate;
 
 // @Hidden
 @Validated // 加上它@MAX,@MIN才會生效
@@ -80,9 +78,6 @@ public class ProductController {
         @RequestParam(defaultValue = "0") @Min(0) Integer offset,            // 要跳過多少筆數據
         HttpSession session
     ){
-        Integer userID = (Integer)session.getAttribute("userId");
-        System.out.println("Order Session ID: " + session.getId());
-        System.out.println("userId: " + userID);
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
