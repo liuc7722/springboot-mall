@@ -77,13 +77,17 @@ public class LinePayService {
     // 認證交易
     public boolean confirmPayment(String transactionId, Integer amount) throws JsonProcessingException {
         // 確認支付的請求URL
-        String confirmUrl = String.format(LINE_PAY_CONFIRM_URL_TEMPLATE, transactionId);
+        String confirmApiRequestUri = String.format(LINE_PAY_CONFIRM_URL_TEMPLATE, transactionId);
+        String confirmUrl = "/v3/payments/" + transactionId + "/confirm";
+        // 上面confirmApiRequestUrl為對Linepay API 發出請求的參數
+        // 下面confirmUrl為signature加密要素的一部分(必須! 不用這個會報錯!)
 
         // 確認支付的請求body
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode requestBody = mapper.createObjectNode();
         requestBody.put("amount", amount);
         requestBody.put("currency", "TWD");
+        System.out.println("requestBody: " + requestBody);
 
         // 請求的Header
         HttpHeaders headers = new HttpHeaders();
@@ -96,22 +100,20 @@ public class LinePayService {
         headers.set("X-LINE-Authorization-Nonce", nonce);
         System.out.println("signature: " + signature);
         System.out.println("nonce: " + nonce);
-        System.out.println("confirmUrl: " + confirmUrl);
+        System.out.println("confirmApiRequestUri: " + confirmApiRequestUri);
 
         // 創建請求實體
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody.toString(), headers);
 
         // 發送請求
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.postForEntity(confirmUrl, requestEntity, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(confirmApiRequestUri, requestEntity, String.class);
 
         // 檢查response
         JsonNode responseJson = mapper.readTree(response.getBody());
-        String returnCode = responseJson.path("returnCode").asText();
-        String returnMessage = responseJson.path("returnMessage").asText();
+        // String returnCode = responseJson.path("returnCode").asText(); // 0000
+        // String returnMessage = responseJson.path("returnMessage").asText(); // Success.
 
-        System.out.println("returnCode: " + returnCode);
-        System.out.println("returnMessage: " + returnMessage);
         return "0000".equals(responseJson.path("returnCode").asText());
     }
 }

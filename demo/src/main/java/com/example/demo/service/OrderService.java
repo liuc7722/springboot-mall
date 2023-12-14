@@ -138,4 +138,9 @@ public class OrderService {
     public Integer getOrderAmountByTransactionId(String transactionId){
         return orderDao.getOrderAmountByTransactionId(transactionId);
     }
+
+    // 已付款，更新訂單資訊
+    public void updateOrderStatusToPay(Integer orderId) {
+        orderDao.updateOrderStatusToPay(orderId);
+    }
 }

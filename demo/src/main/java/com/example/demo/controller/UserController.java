@@ -92,7 +92,7 @@ public class UserController {
     }
 
     // 發送郵件
-    public void sendEmail(String toEmail, String subject, String body) {
+    private void sendEmail(String toEmail, String subject, String body) {
         sendService.sendEmail(toEmail, subject, body);
     }
 

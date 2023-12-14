@@ -38,11 +38,11 @@ public class UserDao extends BaseDao {
                     userId = rs.getInt(1); // 假設user_id是第一列(那rs是什麼呢?)
                 }
             }
-            if(rs != null)
+            if (rs != null)
                 rs.close();
-            if(pstmt != null)
+            if (pstmt != null)
                 pstmt.close();
-            if(conn != null)
+            if (conn != null)
                 conn.close();
 
         } catch (SQLException e) {
@@ -77,11 +77,11 @@ public class UserDao extends BaseDao {
                 user.setEmailVerified(rs.getString("email_verified"));
                 user.setCreatedDate(rs.getDate("created_date"));
             }
-            if(rs != null)
+            if (rs != null)
                 rs.close();
-            if(pstmt != null)
+            if (pstmt != null)
                 pstmt.close();
-            if(conn != null)
+            if (conn != null)
                 conn.close();
 
         } catch (SQLException e) {
@@ -94,15 +94,15 @@ public class UserDao extends BaseDao {
     }
 
     // 根據帳號找出用戶，若無回傳null
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         User user = null;
-        try{
+        try {
             connect();
             String sql = "SELECT * FROM user WHERE username = ?;";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 user = new User();
                 user.setUserId(rs.getInt("user_id"));
                 user.setUserName(rs.getString("username"));
@@ -112,16 +112,16 @@ public class UserDao extends BaseDao {
                 user.setEmailVerified(rs.getString("email_verified"));
                 user.setCreatedDate(rs.getDate("created_date"));
             }
-            if(rs != null)
+            if (rs != null)
                 rs.close();
-            if(pstmt != null)
+            if (pstmt != null)
                 pstmt.close();
-            if(conn != null)
+            if (conn != null)
                 conn.close();
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("getUserByUsername問題");
             System.out.println(e.getMessage());
-        }catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
         return user;
@@ -137,7 +137,7 @@ public class UserDao extends BaseDao {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -152,7 +152,22 @@ public class UserDao extends BaseDao {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // 刪除此人在購物車的紀錄(假定用戶只能購買全部購物車內的商品)
+    public void remove(Integer userId) {
+        try {
+            connect();
+            String sql = "DELETE FROM cart WHERE user_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }

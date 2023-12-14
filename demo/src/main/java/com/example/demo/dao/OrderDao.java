@@ -214,7 +214,7 @@ public class OrderDao extends BaseDao {
             pstmt = conn.prepareStatement(sqlBuilder.toString());
             pstmt.setInt(1, queryParams.getUserId());
             rs = pstmt.executeQuery();
-            if(rs.next())
+            if (rs.next())
                 total = rs.getInt("c");
 
             pstmt.close();
@@ -246,7 +246,7 @@ public class OrderDao extends BaseDao {
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.getMessage();
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.getMessage();
         }
     }
@@ -265,10 +265,25 @@ public class OrderDao extends BaseDao {
             amount = rs.getInt("total_price");
         } catch (SQLException e) {
             e.getMessage();
-        } catch(ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             e.getMessage();
         }
         return amount;
+    }
+
+    // 已付款，更新訂單資訊
+    public void updateOrderStatusToPay(Integer orderId) {
+        try {
+            connect();
+            String sql = "UPDATE `order` SET status = 'SHIPPED' WHERE order_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, orderId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.getMessage();
+        } catch (ClassNotFoundException e) {
+            e.getMessage();
+        }
     }
 
 }

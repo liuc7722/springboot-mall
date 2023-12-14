@@ -89,4 +89,9 @@ public class CartService {
         cartDao.quantitychange(userId, productId, quantity);
     }
 
+    // 刪除此人在購物車的紀錄(假定用戶只能購買全部購物車內的商品)
+    public void remove(Integer userId) {
+        userDao.remove(userId);
+    }
+
 }
