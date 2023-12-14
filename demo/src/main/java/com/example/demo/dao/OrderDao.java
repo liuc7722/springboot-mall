@@ -235,4 +235,40 @@ public class OrderDao extends BaseDao {
         }
     }
 
+    // 創建交易序號(原本為空)
+    public void saveTransactionIdForOrder(Integer id, String transactionId) {
+        try {
+            connect();
+            String sql = "UPDATE `order` SET transaction_id = ? WHERE order_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, transactionId);
+            pstmt.setInt(2, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.getMessage();
+        } catch (ClassNotFoundException e){
+            e.getMessage();
+        }
+    }
+
+    // 使用交易序號取得訂單金額
+    public Integer getOrderAmountByTransactionId(String transactionId) {
+        Integer amount = 0;
+
+        try {
+            connect();
+            String sql = "SELECT total_price FROM `order` WHERE transaction_id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, transactionId);
+            rs = pstmt.executeQuery();
+            rs.next();
+            amount = rs.getInt("total_price");
+        } catch (SQLException e) {
+            e.getMessage();
+        } catch(ClassNotFoundException e){
+            e.getMessage();
+        }
+        return amount;
+    }
+
 }

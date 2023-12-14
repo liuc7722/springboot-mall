@@ -24,7 +24,6 @@ import com.example.demo.util.OrderItemDetail;
 
 import jakarta.validation.Valid;
 
-
 @Component
 public class OrderService {
 
@@ -38,18 +37,16 @@ public class OrderService {
 
     @Autowired
     UserDao userDao;
-    
 
     // 創建訂單
     @Transactional
     public Integer createOrder(Integer userId, @Valid CreateOrderRequest createOrderRequest) {
         // 檢查 user 是否存在
         User user = userDao.getUserById(userId);
-        if(user == null){
+        if (user == null) {
             log.warn("該 userId {} 不存在", userId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
 
         // 計算訂單總花費
         int totalPrice = 0;
@@ -60,26 +57,27 @@ public class OrderService {
             Product product = productDao.getProductById(buyItem.getProductId());
 
             // 檢查 product 是否存在、庫存是否足夠
-            if(product == null){
+            if (product == null) {
                 log.warn("商品 {} 不存在", buyItem.getProductId());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-            } else if(product.getStock() < buyItem.getQuantity()){
-                log.warn("商品 {} 庫存不足，剩餘庫存 {} ，欲購買數量 {}", buyItem.getProductId(),product.getStock(),buyItem.getQuantity());
+            } else if (product.getStock() < buyItem.getQuantity()) {
+                log.warn("商品 {} 庫存不足，剩餘庫存 {} ，欲購買數量 {}", buyItem.getProductId(), product.getStock(),
+                        buyItem.getQuantity());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
-            
+
             // 更新商品庫存
             productDao.updateStock(product.getProductId(), product.getStock() - buyItem.getQuantity());
 
-            int amount =  product.getPrice() * buyItem.getQuantity(); // 計算每個商品的總價
-            totalPrice += amount; 
+            int amount = product.getPrice() * buyItem.getQuantity(); // 計算每個商品的總價
+            totalPrice += amount;
 
             // 轉換BuyItem to OrderItem
             OrderItem orderItem = new OrderItem();
             orderItem.setProductId(buyItem.getProductId());
             orderItem.setQuantity(buyItem.getQuantity());
             orderItem.setPrice(amount); // 每個商品的總價
-            
+
             orderItemList.add(orderItem);
         }
 
@@ -106,7 +104,7 @@ public class OrderService {
         // 再查詢訂單"細項"並set給order (此時Order已擴充)
         List<OrderItemDetail> orderItemsList = orderDao.getOrderItemsByOrderId(orderId);
         order.setOrderItemList(orderItemsList);
-        
+
         return order;
     }
 
@@ -115,10 +113,10 @@ public class OrderService {
         List<Order> orderList = orderDao.getOrders(queryParams);
 
         // getOrders方法只能取得未擴充的Order資訊
-        for(Order order : orderList){
+        for (Order order : orderList) {
             List<OrderItemDetail> orderItemList = orderDao.getOrderItemsByOrderId(order.getOrderId());
 
-            order.setOrderItemList(orderItemList);   // pass by refference          
+            order.setOrderItemList(orderItemList); // pass by refference
         }
         return orderList;
     }
@@ -126,5 +124,18 @@ public class OrderService {
     // 取得訂單總數
     public Integer countOrder(OrderQueryParams queryParams) {
         return orderDao.countDao(queryParams);
+    }
+
+    // 創建交易序號
+    public void saveTransactionIdForOrder(String orderId, String transactionId) {
+        Integer id = Integer.parseInt(orderId);
+        // Order order = orderDao.getOrderById(id);
+
+        orderDao.saveTransactionIdForOrder(id, transactionId);
+    }
+
+    // 使用交易序號取得訂單金額
+    public Integer getOrderAmountByTransactionId(String transactionId){
+        return orderDao.getOrderAmountByTransactionId(transactionId);
     }
 }

@@ -38,7 +38,6 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
 // @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true") //
@@ -83,7 +82,7 @@ public class UserController {
 
         String verificationUrl = "http://localhost:5173/verify?token=" + verificationToken;
         String emailBody = "請點擊以下連結驗證您的電子郵件: " + verificationUrl;
-        sendEmail(user.getEmail(), "恭喜你創建帳號成功，請立即完成信箱認證", emailBody);
+        sendEmail(user.getEmail(), "恭喜" + user.getUserName() + "創建帳號成功，請立即完成信箱認證", emailBody);
 
         // 生成JWT
         String token = JwtUtil.createToken(user.getUserName(), user.getUserId());

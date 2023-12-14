@@ -17,5 +17,7 @@ public class Order {
     String shippingAddress;
     OrderStatus status; 
 
-    List<OrderItemDetail> orderItemList; // 擴充Order，回傳給前端的資訊要更多(雖然這樣就和table沒對應)
+    List<OrderItemDetail> orderItemList; // 擴充Order，回傳給前端的資訊要更多(雖然這樣就和table沒對應)\
+
+    String transactionId; // 交易序號 
 }
