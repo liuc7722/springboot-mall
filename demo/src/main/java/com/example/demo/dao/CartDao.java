@@ -222,7 +222,7 @@ public class CartDao extends BaseDao {
 
             pstmt.close();
             conn.close();
-            
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
