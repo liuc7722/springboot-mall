@@ -68,7 +68,7 @@ public class ProductController {
     @Operation(summary = "查詢商品列表", description = "可附上查詢條件")
     public ResponseEntity<PageResponse<Product>> getProducts(
         // 查詢條件 Filtering
-        @RequestParam( required = false) ProductCategory category, // 種類
+        @RequestParam(required = false) ProductCategory category, // 種類
         @RequestParam(required = false) String search,            // 搜尋
         // 排序 Sorting
         @RequestParam(defaultValue = "created_date") String orderBy, // 預設依照創建日期排序
@@ -98,6 +98,26 @@ public class ProductController {
         page.setTotal(total);
         page.setResults(productList);   
         PageResponse<Product> pageResponse = new PageResponse<>(0, "查询成功", page);   
+
+        return new ResponseEntity<>(pageResponse, HttpStatus.OK);
+    }
+
+    // 隨機查詢商品列表
+    @GetMapping("/products/random")
+    public ResponseEntity<PageResponse<Product>> getRandomProducts(
+        @RequestParam(defaultValue = "12")@Max(1000) @Min(0) Integer limit
+    ){
+        // 取得product list
+        List<Product> productList = productService.getRandomProducts(limit);
+        // total總數懶得給了，這邊通常前端要給limit，而且只有一頁
+
+        // 分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(0);
+        page.setTotal(0);
+        page.setResults(productList);
+        PageResponse<Product> pageResponse = new PageResponse<>(0, "查詢成功", page);
 
         return new ResponseEntity<>(pageResponse, HttpStatus.OK);
     }

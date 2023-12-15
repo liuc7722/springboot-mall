@@ -19,6 +19,8 @@ import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Component
 public class ProductDao extends BaseDao {
@@ -36,7 +38,7 @@ public class ProductDao extends BaseDao {
 
             // 加上查詢條件
             addFilteringSql(sqlBuider, productQueryParams);
-            
+
             // 加上排序條件 (預設值已寫在Controller,故不用檢查null)
             sqlBuider.append(" ORDER BY ").append(productQueryParams.getOrderBy()).append(" ")
                     .append(productQueryParams.getSort());
@@ -56,6 +58,44 @@ public class ProductDao extends BaseDao {
                 pstmt.setString(paramIndex, "%" + productQueryParams.getSearch() + "%");
             }
 
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setProductId(rs.getInt("product_id"));
+                product.setPhotoUrl(rs.getString("photo_url"));
+                product.setTitle(rs.getString("title"));
+                product.setDescription(rs.getString("description"));
+                product.setPrice(rs.getInt("price"));
+                product.setStoreUrl(rs.getString("store_url"));
+                product.setStoreName(rs.getString("store_name"));
+                product.setCreatedDate(rs.getDate("created_date"));
+                product.setLastModifiedDate(rs.getDate("last_modified_date"));
+                product.setStock(rs.getInt("stock"));
+                // 將String轉成enum
+                String categoryStr = rs.getString("category");
+                ProductCategory productCategory = ProductCategory.valueOf(categoryStr);
+                product.setCategory(productCategory); // product需要set一個enum成員
+                productList.add(product);
+            }
+            pstmt.close();
+            rs.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+        return productList;
+    }
+
+    // 隨機查詢商品列表
+    public List<Product> getRandomProducts(@Max(1000) @Min(0) Integer limit) {
+        List<Product> productList = new ArrayList<>();
+        try {
+            connect();
+            String sql = "SELECT * FROM product ORDER BY RAND() LIMIT ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, limit);
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 Product product = new Product();
@@ -285,8 +325,8 @@ public class ProductDao extends BaseDao {
     public void updateStock(int productId, int stock) {
         try {
             connect();
-            String sql = "UPDATE product SET stock = ?, last_modified_date = NOW()" + 
-            " WHERE product_id = ?";
+            String sql = "UPDATE product SET stock = ?, last_modified_date = NOW()" +
+                    " WHERE product_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, stock);
             pstmt.setInt(2, productId);
@@ -296,31 +336,14 @@ public class ProductDao extends BaseDao {
             conn.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e){
+        } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // 到資料庫查詢所有商品
     // public ArrayList<Product> getAllProducts() {
     // ArrayList<Product> products = new ArrayList<>();
-
-
 
     // try {
     // connect();

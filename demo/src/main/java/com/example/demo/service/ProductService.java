@@ -15,6 +15,8 @@ import com.example.demo.model.Product;
 import com.example.demo.model.ProductPage;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Component
 public class ProductService {
@@ -55,6 +57,11 @@ public class ProductService {
     // 刪除多筆商品
     public void deleteBatchProductsById(List<Integer> productIds) {
         productDao.deleteBatchProductsById(productIds);
+    }
+
+    // 隨機查詢商品列表
+    public List<Product> getRandomProducts(@Max(1000) @Min(0) Integer limit) {
+        return productDao.getRandomProducts(limit);
     }
 
     // 查詢所有商品

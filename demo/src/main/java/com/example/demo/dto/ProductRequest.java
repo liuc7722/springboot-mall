@@ -16,12 +16,8 @@ public class ProductRequest {
     String description;
     @NotNull
     int price;
-    @NotNull
     String storeUrl;
-    @NotNull
     String storeName;
-    @NotNull
     int stock;
-    @NotNull
     ProductCategory category; // 商品種類可以使用enum呈現，這邊先不做
 }
