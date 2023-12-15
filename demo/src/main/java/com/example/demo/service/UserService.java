@@ -3,15 +3,14 @@ package com.example.demo.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.example.demo.dao.CartDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dto.UserLoginRequest;
 import com.example.demo.dto.UserRegisterRequest;
+import com.example.demo.exception.UsernameAlreadyExistsException;
 import com.example.demo.model.User;
 
 import jakarta.validation.Valid;
@@ -27,13 +26,14 @@ public class UserService {
     @Autowired
     CartDao cartDao;
 
-    // 註冊 + 新增購物車
+    // 註冊
     public Integer register(@Valid UserRegisterRequest userRegisterRequest) {
+
         // 檢查是否已有此帳號
         User user = userDao.getUserByUsername(userRegisterRequest.getUsername());
 
         if (user != null) { // 假設此帳號被註冊過
-            return null;
+            throw new UsernameAlreadyExistsException(user.getUserName() +  " 已經存在");
         }
 
         // 使用 MD5 生成密碼的雜湊值
@@ -66,7 +66,7 @@ public class UserService {
         String hashedPassword = DigestUtils.md5DigestAsHex(userLoginRequest.getPassword().getBytes());
 
         // 檢查密碼
-        if (!user.getPassword().equals(hashedPassword)) { 
+        if (!user.getPassword().equals(hashedPassword)) {
             return null;
         } else {
             return user;
@@ -77,8 +77,5 @@ public class UserService {
     public void deleteUserById(Integer userId) {
         userDao.deleteUserById(userId);
     }
-
-    
- 
 
 }

@@ -24,6 +24,7 @@ import com.example.demo.service.CartService;
 import com.example.demo.util.CartItemDetail;
 import com.example.demo.util.JwtUtil;
 import com.example.demo.util.Page;
+import com.example.demo.util.SessionUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -73,7 +74,6 @@ public class CartController {
         page.setResults(cartItems);
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
-
     // 添加一件商品到購物車
     @PutMapping("/users/carts/{productId}/increment")
     @Tag(name = "購物車API")

@@ -7,8 +7,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,7 +66,7 @@ public class UserController {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = BaseResponse.class)) }),
             @ApiResponse(responseCode = "400", description = "打API失敗", content = @Content),
     })
-    public ResponseEntity register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
+    public ResponseEntity<LoginResponse> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
 
         // 創建用戶並回傳ID
         Integer userId = userService.register(userRegisterRequest);

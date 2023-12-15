@@ -30,7 +30,6 @@ public class UserDao extends BaseDao {
             pstmt.setInt(5, userRegisterRequest.getEmailVerified());
 
             int affectedRows = pstmt.executeUpdate(); // 增、改、刪使用Update，會回傳int；查用Query，會回傳ResultSet
-
             // 若新增成功，回傳ID
             if (affectedRows > 0) {
                 ResultSet rs = pstmt.getGeneratedKeys(); // 取得主鍵值

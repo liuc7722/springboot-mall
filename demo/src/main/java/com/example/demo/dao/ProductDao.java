@@ -58,7 +58,7 @@ public class ProductDao extends BaseDao {
                 pstmt.setString(paramIndex, "%" + productQueryParams.getSearch() + "%");
             }
 
-            rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Product product = new Product();
                 product.setProductId(rs.getInt("product_id"));
@@ -77,12 +77,17 @@ public class ProductDao extends BaseDao {
                 product.setCategory(productCategory); // product需要set一個enum成員
                 productList.add(product);
             }
-            pstmt.close();
-            rs.close();
-            conn.close();
+            if(pstmt != null)
+                pstmt.close();
+            if(rs != null)
+                rs.close();
+            if(conn != null)
+                conn.close();
         } catch (SQLException e) {
+            System.out.println("getProducts SQL問題");
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
+            System.out.println("getProducts CLASS問題");
             System.out.println(e.getMessage());
         }
         return productList;
@@ -128,7 +133,7 @@ public class ProductDao extends BaseDao {
 
     // 取得商品總數 (根據查詢條件不同，總數也不同)
     public Integer countProduct(ProductQueryParams productQueryParams) {
-
+        int total = 0;
         try {
             connect();
             StringBuilder sqBuilder = new StringBuilder("SELECT count(*) as c FROM product WHERE 1=1");
@@ -146,17 +151,26 @@ public class ProductDao extends BaseDao {
                 pstmt.setString(paramIndex, "%" + productQueryParams.getSearch() + "%");
 
             // 執行查詢並取得總數
-            rs = pstmt.executeQuery();
-            rs.next();
-            int total = rs.getInt("c");
+            ResultSet rs1 = pstmt.executeQuery();
 
-            return total;
+            if(rs1.next())
+                total = rs1.getInt("c");
+
+            if(pstmt != null)
+                pstmt.close();
+            if(rs1 != null)
+                rs1.close();
+            if(conn != null)
+                conn.close();
+
         } catch (SQLException e) {
+            System.out.println("countProduct SQL問題");
             System.out.println(e.getMessage());
         } catch (ClassNotFoundException e) {
+            System.out.println("countProduct CLASS問題");
             System.out.println(e.getMessage());
         }
-        return null;
+        return total;
     }
 
     // 查詢商品
@@ -318,7 +332,7 @@ public class ProductDao extends BaseDao {
         }
         // 目前只有商品種類和名稱的查詢條件，若將來有其他查詢條件(如價格區間)，便可加在這邊，使得上面的方法呼叫addFilteringSql
         // 即可，這就是提煉程式
-        // 補，為何排序和分頁不寫進來? 因為SQL上不一樣
+        // 補充:為何排序和分頁不寫進來? 因為SQL上不一樣
     }
 
     // 更新商品庫存

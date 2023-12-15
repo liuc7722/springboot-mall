@@ -19,7 +19,7 @@ import com.example.demo.model.UploadPhotoResponse;
 
 
 //上傳檔案的API
-@CrossOrigin(origins = "*") //允許不同網域的網頁呼叫API
+// @CrossOrigin(origins = "*") //允許不同網域的網頁呼叫API
 @RestController
 public class UploadController {
     @Value("${upload.server.path}")

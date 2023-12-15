@@ -72,13 +72,6 @@ public class OrderController {
         }
         Integer userId = jwtUtil.getUserIdFromToken(token);
 
-        // // 判斷有無登入過
-        // if (sessionUserId == null || !sessionUserId.equals(userId)) { // 驗證是否登入且訪問的是自己的訂單
-        //     System.out.println("NOT FOUND");
-        //     System.out.println(sessionUserId);
-        //     return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        // }
-
         OrderQueryParams queryParams = new OrderQueryParams();
         queryParams.setUserId(userId);
         queryParams.setLimit(limit);

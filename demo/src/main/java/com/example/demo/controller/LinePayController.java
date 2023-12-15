@@ -44,7 +44,8 @@ public class LinePayController {
 
     @Autowired
     JwtUtil jwtUtil;
-
+    
+    // 創建一筆Linepay訂單和交易
     @PostMapping("/line-pay/checkout")
     public ResponseEntity<String> linePayCheckout(@RequestBody CheckoutPaymentRequestForm form) {
 
