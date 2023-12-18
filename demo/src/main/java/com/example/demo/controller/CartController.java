@@ -1,30 +1,23 @@
 package com.example.demo.controller;
 
-import java.sql.SQLException;
 import java.util.List;
-
-import javax.swing.text.html.HTML;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.CartQueryParams;
-import com.example.demo.model.Cart;
 import com.example.demo.service.CartService;
 import com.example.demo.util.CartItemDetail;
 import com.example.demo.util.JwtUtil;
 import com.example.demo.util.Page;
-import com.example.demo.util.SessionUtils;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +26,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
 @Validated // 加上它@MAX,@MIN才會生效
-// @CrossOrigin(origins = "*") // 允許不同網域的網頁呼叫API
 @RestController
 public class CartController {
 
@@ -123,7 +115,7 @@ public class CartController {
     @PutMapping("/users/carts/{productId}/{quantity}")
     @Tag(name = "購物車API")
     @Operation(summary = "購物車商品數量input與資料庫連動 ")
-    public ResponseEntity quantitychange(HttpServletRequest request, @PathVariable Integer productId,
+    public ResponseEntity<?> quantitychange(HttpServletRequest request, @PathVariable Integer productId,
             @PathVariable Integer quantity) {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {

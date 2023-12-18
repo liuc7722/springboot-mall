@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +25,6 @@ import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 import com.example.demo.util.Page;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
@@ -36,7 +34,6 @@ import jakarta.validation.constraints.Min;
 
 // @Hidden
 @Validated // 加上它@MAX,@MIN才會生效
-// @CrossOrigin(origins = "*") // 允許不同網域的網頁呼叫API
 @RestController
 public class ProductController {
 

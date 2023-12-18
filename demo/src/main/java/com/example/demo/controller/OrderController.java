@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,7 +21,6 @@ import com.example.demo.util.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -38,7 +35,7 @@ public class OrderController {
     JwtUtil jwtUtil;
 
     // 創建訂單
-    @PostMapping("/users/orders") // 為何這樣設計!?
+    @PostMapping("/users/orders") 
     @Tag(name = "訂單API")
     @Operation(summary = "創建訂單", description = "網址請輸入users/使用者ID/orders，如users/9/orders，表示使用者ID為9的使用者新增一筆訂單，訂單資訊放在RequestBody內")
     public ResponseEntity<?> createOrder(HttpServletRequest request,

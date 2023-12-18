@@ -9,18 +9,12 @@ import com.example.demo.model.Countdown;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.management.ObjectName;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 // @CrossOrigin(origins = "*")
@@ -29,7 +23,7 @@ public class CountdownController extends BaseController{
     
     // 取得倒數時間
     @GetMapping("/v1/countdown")
-    public ResponseEntity getCountdown() {
+    public ResponseEntity<?> getCountdown() {
         Timestamp t = queryDeadline();
 
 

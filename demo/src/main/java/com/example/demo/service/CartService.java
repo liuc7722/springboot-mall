@@ -13,7 +13,6 @@ import com.example.demo.dao.CartDao;
 import com.example.demo.dao.ProductDao;
 import com.example.demo.dao.UserDao;
 import com.example.demo.dto.CartQueryParams;
-import com.example.demo.model.Cart;
 import com.example.demo.model.Product;
 import com.example.demo.model.User;
 import com.example.demo.util.CartItemDetail;

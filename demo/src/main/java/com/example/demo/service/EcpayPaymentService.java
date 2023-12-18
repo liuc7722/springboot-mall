@@ -10,8 +10,6 @@ import com.example.demo.model.Order;
 
 import ecpay.payment.integration.AllInOne;
 import ecpay.payment.integration.domain.AioCheckOutALL;
-import ecpay.payment.integration.domain.AioCheckOutOneTime;
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class EcpayPaymentService {
@@ -24,7 +22,7 @@ public class EcpayPaymentService {
 
         String uuId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
 
-        AllInOne all = new AllInOne("");
+        all = new AllInOne("");
         AioCheckOutALL obj = new AioCheckOutALL();
         obj.setMerchantTradeNo(uuId);
         /* 

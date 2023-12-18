@@ -31,7 +31,7 @@ public class EmailVerificationTokenService {
             LocalDateTime tokenExpiration = new java.sql.Timestamp(
                     token.getExpirationDate().getTime()).toLocalDateTime();
             if (tokenExpiration.isAfter(LocalDateTime.now())) {
-                // 更新用户的 emailVerified 狀態
+                // 更新用戶的 emailVerified 狀態
                 userService.setEmailVerified(token.getUserId());
                 // 可以選擇刪除或標記該token
                 return true;

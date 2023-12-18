@@ -1,6 +1,6 @@
 package com.example.demo.dao;
 
-import java.sql.Date;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.constant.ProductCategory;
@@ -25,8 +23,6 @@ import jakarta.validation.constraints.Min;
 @Component
 public class ProductDao extends BaseDao {
 
-    @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     // 查詢商品列表
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
@@ -228,10 +224,10 @@ public class ProductDao extends BaseDao {
             pstmt.setString(6, productRequest.getStoreName());
             pstmt.setInt(7, productRequest.getStock());
             pstmt.setString(8, productRequest.getCategory().name()); // 將enum改成String
-            // pstmt.setTimestamp(9, new Timestamp(System.currentTimeMillis())); // 添加当前时间戳
+            // pstmt.setTimestamp(9, new Timestamp(System.currentTimeMillis())); // 添加當前時間戳記
             // pstmt.setTimestamp(10, new Timestamp(System.currentTimeMillis()));
 
-            // 注意創建時間並沒有實作，而是使用NOW()給資料庫自己生成
+            // 注意創建時間並沒有實作，而是使用NOW()給MySQL生成
             int affectedRows = pstmt.executeUpdate();
             System.out.println("affectedRows: " + affectedRows);
             // 若新增成功，回傳ID
@@ -355,39 +351,5 @@ public class ProductDao extends BaseDao {
         }
     }
 
-    // 到資料庫查詢所有商品
-    // public ArrayList<Product> getAllProducts() {
-    // ArrayList<Product> products = new ArrayList<>();
-
-    // try {
-    // connect();
-    // String sql = "SELECT * FROM product";
-    // pstmt = conn.prepareStatement(sql);
-    // rs = pstmt.executeQuery();
-    // while (rs.next()) {
-    // Product product = new Product();
-    // product.setId(rs.getInt("id"));
-    // product.setPhotoUrl(rs.getString("photo_url"));
-    // product.setTitle(rs.getString("title"));
-    // product.setDescription(rs.getString("description"));
-    // product.setPrice(rs.getInt("price"));
-    // product.setStoreUrl(rs.getString("store_url"));
-    // product.setStoreName(rs.getString("store_name"));
-    // product.setCreatedDate(rs.getDate("created_date"));
-    // product.setLastModifiedDate(rs.getDate("last_modified_date"));
-    // product.setStock(rs.getInt("stock"));
-    // product.setCategory(rs.getString("category"));
-    // products.add(product);
-    // }
-    // pstmt.close();
-    // rs.close();
-    // conn.close();
-    // } catch (SQLException e) {
-    // System.out.println(e.getMessage());
-    // } catch (ClassNotFoundException e) {
-    // System.out.println(e.getMessage());
-    // }
-    // return products;
-    // }
 
 }

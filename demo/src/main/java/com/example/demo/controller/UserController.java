@@ -1,17 +1,10 @@
 package com.example.demo.controller;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,6 +49,11 @@ public class UserController {
 
     @Autowired
     EmailVerificationTokenService verificationTokenService;
+
+    @GetMapping("/hello")
+    public String helloworld(){
+        return "HelloWorld";
+    }
 
     // 新增用戶
     @PostMapping("user/register")

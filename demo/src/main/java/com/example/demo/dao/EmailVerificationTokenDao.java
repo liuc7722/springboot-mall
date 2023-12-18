@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.model.EmailVerificationToken;
 
-import jakarta.validation.constraints.Email;
 
 @Component
 public class EmailVerificationTokenDao extends BaseDao {
@@ -49,7 +48,6 @@ public class EmailVerificationTokenDao extends BaseDao {
                 token.setUserId(rs.getInt("user_id"));
                 token.setVerificationToken(rs.getString("verification_token"));
                 token.setExpirationDate(new Date(rs.getTimestamp("expiration_date").getTime()));
-                // 设置其他字段...
             }
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e.getMessage());

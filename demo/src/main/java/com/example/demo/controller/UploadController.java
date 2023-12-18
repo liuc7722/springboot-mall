@@ -5,28 +5,24 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.Response.BaseResponse;
 import com.example.demo.model.UploadPhotoResponse;
 
 
 
 //上傳檔案的API
-// @CrossOrigin(origins = "*") //允許不同網域的網頁呼叫API
 @RestController
 public class UploadController {
     @Value("${upload.server.path}")
     private String serverUploadPath;
 
     @PostMapping("/file")
-    public ResponseEntity uploadFiles(@RequestParam("files") MultipartFile[] files){ 
+    public ResponseEntity<?> uploadFiles(@RequestParam("files") MultipartFile[] files){ 
         // 取得檔案後只是先存到伺服器(程式?)上，我們需要把它存至磁碟機內
 
         // 取得上傳的原始檔名

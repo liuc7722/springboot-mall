@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.Order;
@@ -20,7 +19,6 @@ public class EcpayPaymentController {
     @Autowired
     OrderService orderService;
 
-    @Autowired
     public EcpayPaymentController(EcpayPaymentService ecpayPaymentService) {
         this.ecpayPaymentService = ecpayPaymentService;
     }
