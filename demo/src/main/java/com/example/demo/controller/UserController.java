@@ -174,7 +174,7 @@ public class UserController {
     @DeleteMapping("/user/{userId}")
     @Tag(name = "使用者API")
     @Operation(summary = "刪除帳號", description = "輸入使用者ID")
-    public ResponseEntity deleteUser(@PathVariable Integer userId) {
+    public ResponseEntity<?> deleteUser(@PathVariable Integer userId) {
         userService.deleteUserById(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
